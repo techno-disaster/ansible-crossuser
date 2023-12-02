@@ -12,6 +12,7 @@ A very simple playbook to list podman containers, list and apply updates to them
 
 While this started as a way to just do podman updates, why not just run commands across users!
 
+```
 > ansible-playbook command.yml 
 command: whoami
 
@@ -34,6 +35,7 @@ user2
 
 PLAY RECAP *********************************************************************************************************************************************************************************************************************************
 host                     : ok=x    changed=y    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
 
 #### become vs ssh playbook:
 
