@@ -1,11 +1,10 @@
 ---
 - name: minipc ansi
   hosts: minipc
-  vars:
-    users:
-      - media
-      - nextcloud
-      - flaresolverr
+
+  vars_files:
+    - vars/users.yml
+
   tasks:
     - name: "Querying podman for containers"
       command: podman ps -a
