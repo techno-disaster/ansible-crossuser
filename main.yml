@@ -1,0 +1,50 @@
+---
+- name: minipc ansi
+  hosts: minipc
+  vars:
+    users:
+      - media
+      - nextcloud
+      - flaresolverr
+  tasks:
+    - name: "Querying podman for containers"
+      command: podman ps -a
+      become: true
+      become_user: "{{ item }}"
+      with_items: "{{ users }}"
+      register: podman_ps
+      tags: ps
+    - debug:
+        msg: "{{ item.msg }}"
+      vars:
+        ansible_callback_diy_runner_item_on_ok_msg: "{{ item.stdout }}" 
+      with_items: "{{ podman_ps.results }}"
+      tags: ps
+
+    - name: "Querying podman auto-update"
+      command: podman auto-update --dry-run
+      become: true
+      become_user: "{{ item }}"
+      with_items: "{{ users }}"
+      register: podman_autoupdate
+      tags: check-updates
+    - debug:
+        msg: "{{ item.msg }}"
+      vars:
+        ansible_callback_diy_runner_item_on_ok_msg: "{{ item.stdout }}" 
+      with_items: "{{ podman_autoupdate.results }}"
+      tags: check-updates
+
+    - name: "Apply podman updates"
+      command: podman auto-update
+      become: true
+      become_user: "{{ item }}"
+      with_items: "{{ users }}"
+      register: podman_autoupdate
+      tags: ['never', 'apply-updates' ]
+    - debug:
+        msg: "{{ item.msg }}"
+      vars:
+        ansible_callback_diy_runner_item_on_ok_msg: "{{ item.stdout }}" 
+      with_items: "{{ podman_autoupdate.results }}"
+      tags: ['never', 'apply-updates' ]
