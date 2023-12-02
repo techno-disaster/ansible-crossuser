@@ -1,5 +1,5 @@
 ---
-- name: "Podman ansible updates"
+- name: "Podman ansible updates (using ssh)"
   hosts: minipc
 
   vars_files:
@@ -9,8 +9,8 @@
   tasks:
     - name: "Querying podman for containers"
       command: podman ps -a
-      become: true
-      become_user: "{{ item }}"
+      vars:
+        ansible_user: "{{ item }}"
       with_items: "{{ users }}"
       register: ps
       tags: ps
@@ -23,8 +23,8 @@
 
     - name: "Querying podman auto-update"
       command: podman auto-update --dry-run
-      become: true
-      become_user: "{{ item }}"
+      vars:
+        ansible_user: "{{ item }}"
       with_items: "{{ users }}"
       register: checkupdates
       tags: checkupdates
@@ -37,8 +37,8 @@
 
     - name: "Applying podman auto-update"
       command: podman auto-update
-      become: true
-      become_user: "{{ item }}"
+      vars:
+        ansible_user: "{{ item }}"
       with_items: "{{ users }}"
       register: applyupdates
       tags: ['never', 'applyupdates' ]

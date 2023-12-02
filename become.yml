@@ -1,0 +1,50 @@
+---
+- name: "Podman ansible updates (using become)"
+  hosts: minipc
+
+  vars_files:
+    - vars/users.yml
+  vars:
+    item_on_ok_msg: "{{ item.item }}: \n{{ item.stdout}}\n\n" 
+  tasks:
+    - name: "Querying podman for containers"
+      command: podman ps -a
+      become: true
+      become_user: "{{ item }}"
+      with_items: "{{ users }}"
+      register: ps
+      tags: ps
+    - debug:
+        msg: "{{ item.msg }}"
+      vars:
+        ansible_callback_diy_runner_item_on_ok_msg: "{{ item_on_ok_msg }}"
+      with_items: "{{ ps.results }}"
+      tags: ps
+
+    - name: "Querying podman auto-update"
+      command: podman auto-update --dry-run
+      become: true
+      become_user: "{{ item }}"
+      with_items: "{{ users }}"
+      register: checkupdates
+      tags: checkupdates
+    - debug:
+        msg: "{{ item.msg }}"
+      vars:
+        ansible_callback_diy_runner_item_on_ok_msg: "{{ item_on_ok_msg }}"
+      with_items: "{{ checkupdates.results }}"
+      tags: checkupdates
+
+    - name: "Applying podman auto-update"
+      command: podman auto-update
+      become: true
+      become_user: "{{ item }}"
+      with_items: "{{ users }}"
+      register: applyupdates
+      tags: ['never', 'applyupdates' ]
+    - debug:
+        msg: "{{ item.msg }}"
+      vars:
+        ansible_callback_diy_runner_item_on_ok_msg: "{{ item_on_ok_msg }}"
+      with_items: "{{ applyupdates.results }}"
+      tags: ['never', 'applyupdates' ]

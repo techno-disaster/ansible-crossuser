@@ -10,10 +10,14 @@ A very simple playbook to list podman containers, list and apply updates to them
 
 Current tags: [ps, checkupdates, applyupdates]
 
-Running `ansible-playbook main.yml -K` without any tags will run `ps` and `checkupdates`
+Ways to change user: 
+- using ssh for each user, `ansible-playbook ssh.yml`.
+- using ansible's `become` (sudo su -c), `ansible-playbook become.yml -K`, needs sudo password or login as root
+
+Running `ansible-playbook {ssh/become}.yml` without any tags will run `ps` and `checkupdates`
 
 Pass in multiple tags to run tasks at once:
-- ansible-playbook main.yml -K --tags "checkupdates, applyupdates"
+- ansible-playbook ssh.yml --tags "checkupdates, applyupdates"
 
 ```
 PLAY [Podman ansible updates] *************************************************************************************************************************************************************************************************************************
