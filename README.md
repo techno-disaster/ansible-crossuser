@@ -8,6 +8,33 @@ A very simple playbook to list podman containers, list and apply updates to them
 
 ### Running
 
+#### General use:
+
+While this started as a way to just do podman updates, why not just run commands across users!
+
+> ansible-playbook command.yml 
+command: whoami
+
+PLAY [Podman ansible crossuser command (using ssh)] ****************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************************************************************************
+ok: [host]
+
+TASK [Running custom command using shell] **************************************************************************************************************************************************************************************************
+changed: [host] => (item=user1)
+changed: [host] => (item=user2)
+
+TASK [debug] *******************************************************************************************************************************************************************************************************************************
+
+user1:
+user1
+
+user2:
+user2
+
+PLAY RECAP *********************************************************************************************************************************************************************************************************************************
+host                     : ok=x    changed=y    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
 #### become vs ssh playbook:
 
 On the host you can either use become (using the sudo password or root login) or ssh to switch between your users list.

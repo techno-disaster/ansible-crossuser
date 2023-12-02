@@ -1,0 +1,25 @@
+---
+- name: "Podman ansible crossuser command (using ssh)"
+  hosts: hosts
+
+  vars_files:
+    - vars/users.yml
+  vars:
+    item_on_ok_msg: "{{ item.item }}: \n{{ item.stdout}}\n\n"    
+  
+  vars_prompt:
+    - name: command
+      private: false
+
+  tasks:
+    - name: "Running custom command using shell"
+      shell: "{{ command }}"
+      vars:
+        ansible_user: "{{ item }}"
+      with_items: "{{ users }}"
+      register: customcommand
+    - debug:
+        msg: "{{ item.msg }}"
+      vars:
+        ansible_callback_diy_runner_item_on_ok_msg: "{{ item_on_ok_msg }}"
+      with_items: "{{ customcommand.results }}"

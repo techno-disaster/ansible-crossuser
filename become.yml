@@ -1,6 +1,6 @@
 ---
 - name: "Podman ansible updates (using become)"
-  hosts: minipc
+  hosts: hosts
 
   vars_files:
     - vars/users.yml

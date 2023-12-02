@@ -1,6 +1,6 @@
 ---
 - name: "Podman ansible updates (using ssh)"
-  hosts: minipc
+  hosts: hosts
 
   vars_files:
     - vars/users.yml
@@ -48,3 +48,4 @@
         ansible_callback_diy_runner_item_on_ok_msg: "{{ item_on_ok_msg }}"
       with_items: "{{ applyupdates.results }}"
       tags: ['never', 'applyupdates' ]
+
