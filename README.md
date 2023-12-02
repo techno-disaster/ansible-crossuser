@@ -1,6 +1,6 @@
 ### Podman Ansible Updates
 
-A very simple playbook to list podman containers, list and apply updates to them across various users. 
+A very simple playbook to run commands across various users. This started as a way to handle podman updates for users using `su -c` and then using ssh. But why just podman updates, run commands across your users! 
 
 ### Setup
 - Setup host in inventory
@@ -9,8 +9,6 @@ A very simple playbook to list podman containers, list and apply updates to them
 ### Running
 
 #### General use:
-
-While this started as a way to just do podman updates, why not just run commands across users!
 
 ```
 > ansible-playbook command.yml 
