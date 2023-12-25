@@ -1,11 +1,10 @@
 ---
 - name: "Podman ansible crossuser command (using ssh)"
-  hosts: hosts
-
-  vars_files:
-    - vars/users.yml
+  hosts: all
+  gather_facts: false
+  
   vars:
-    item_on_ok_msg: "{{ item.item }}: \n{{ item.stdout}}\n\n"    
+    item_on_ok_msg: "{{ item.item }}@{{ inventory_hostname }}: \n{{ item.stdout }}\n\n"    
   
   vars_prompt:
     - name: command
